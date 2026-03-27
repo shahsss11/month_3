@@ -15,6 +15,6 @@ def main_page(page: ft.Page):
 
     page.add(text_hello, text_hello2, text_input, text_button, elevated_button, icon_button)
 
-ft.app(target=main_page)
+ft.app(target=main_page) 
 
 
