@@ -1,20 +1,38 @@
-import flet as ft
+import flet as ft 
+
 def main_page(page: ft.Page):
     page.title = 'Мое первое приложение'
     page.theme_mode = ft.ThemeMode.LIGHT
 
-    text_hello = ft.Text('Hello')
-    text_hello2 = ft.Text('Мое приложение')
+    def text_name(e):  # e - event | "_" 
+        text_hello.value = f"Добро пожаловать! {text_input.value}"
+        name = text_input.value.strip()
+        text_hello.value = None
 
-    text_input = ft.TextField(label='Введите имя')
+        if name:
+           text_hello.value = f"hello {name}"
+        else:
+            text_hello.value = "Введи имя быстрее пожалуйста плиз!!!" 
+            text_hello.color = ft.Colors.RED_900
 
-    elevated_button = ft.ElevatedButton("send", icon=ft.Icons.SEND, color=ft.Colors.GREEN_700, icon_color=ft.Colors.BLUE_900)
-    text_button = ft.TextButton('send')
-    icon_button = ft.IconButton(icon=ft.Icons.SEND)
+        page.update()
+
+    text_hello = ft.Text('Hello', color=ft.Colors.RED)
+    text_input = ft.TextField(label='Введите свое имя')
+    btn = ft.ElevatedButton('send', icon=ft.Icons.SEND, on_click=text_name)
+    
+    theme = page.theme_mode
+
+    def theme_change(e):
+        if theme == ft.ThemeMode.LIGHT:
+            page.theme_mode = ft.ThemeMode.DARK
+        else:
+            page.theme_mode = ft.ThemeMode.LIGHT
+
+    
+    theme_btn = ft.IconButton(icon=ft.Icons.BRIGHTNESS_7, on_click=theme_change)
+
+    page.add(text_hello, text_input, btn, theme_btn)
 
 
-    page.add(text_hello, text_hello2, text_input, text_button, elevated_button, icon_button)
-
-ft.app(target=main_page) 
-
-
+ft.app(main_page, )
