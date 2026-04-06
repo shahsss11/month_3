@@ -17,4 +17,4 @@ def main(page: ft.Page):
 
     page.add(text_hello, btn)
 
-ft.app(target=main)
+ft.app(main)
