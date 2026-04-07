@@ -20,19 +20,19 @@ def main_page(page: ft.Page):
     text_hello = ft.Text('Hello', color=ft.Colors.RED)
     text_input = ft.TextField(label='Введите свое имя')
     btn = ft.ElevatedButton('send', icon=ft.Icons.SEND, on_click=text_name)
-    
-    theme = page.theme_mode
 
-    def theme_change(e):
-        if theme == ft.ThemeMode.LIGHT:
-            page.theme_mode = ft.ThemeMode.DARK
-        else:
+    def thememode(e):
+        if page.theme_mode == ft.ThemeMode.DARK:
             page.theme_mode = ft.ThemeMode.LIGHT
+        else:
+            page.theme_mode = ft.ThemeMode.DARK
+        
+        page.update()
 
-    
-    theme_btn = ft.IconButton(icon=ft.Icons.BRIGHTNESS_7, on_click=theme_change)
+
+    theme_btn = ft.IconButton(icon=ft.Icons.BRIGHTNESS_7, on_click=thememode)
 
     page.add(text_hello, text_input, btn, theme_btn)
 
 
-ft.app(main_page, )
+ft.app(main_page, view=ft.AppView.WEB_BROWSER)
