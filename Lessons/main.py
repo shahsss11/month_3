@@ -3,23 +3,30 @@ import flet as ft
 def main_page(page: ft.Page):
     page.title = 'Мое первое приложение'
     page.theme_mode = ft.ThemeMode.LIGHT
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
-    def text_name(e):  # e - event | "_" 
-        text_hello.value = f"Добро пожаловать! {text_input.value}"
+    greeting_history = []
+
+    greeting_text = ft.Text('История заполнения:')
+
+    def text_name(e):
         name = text_input.value.strip()
-        text_hello.value = None
+        
+        page.update()
 
         if name:
-           text_hello.value = f"hello {name}"
+           text_hello.value = f"Привет! {name}"
+           text_hello.color = ft.Colors.BLUE
+           text_input.value = ""
+           greeting_history.append(name)
+           greeting_text.value = f'История приветствия: \n' + "\n".join(greeting_history)
+
         else:
-            text_hello.value = "Введи имя быстрее пожалуйста плиз!!!" 
+            text_hello.value = "Введите корректное имя!" 
             text_hello.color = ft.Colors.RED_900
 
         page.update()
-
-    text_hello = ft.Text('Hello', color=ft.Colors.RED)
-    text_input = ft.TextField(label='Введите свое имя')
-    btn = ft.ElevatedButton('send', icon=ft.Icons.SEND, on_click=text_name)
 
     def thememode(e):
         if page.theme_mode == ft.ThemeMode.DARK:
@@ -30,9 +37,26 @@ def main_page(page: ft.Page):
         page.update()
 
 
+    text_hello = ft.Text('Как тебя зовут?', size=20)
+    text_input = ft.TextField(label='Ваше имя', on_submit=text_name, expand=False)
+    btn = ft.ElevatedButton('send', icon=ft.Icons.SEND, on_click=text_name)
+
+
     theme_btn = ft.IconButton(icon=ft.Icons.BRIGHTNESS_7, on_click=thememode)
 
-    page.add(text_hello, text_input, btn, theme_btn)
+    def clear_history(e):
+        greeting_history.clear()
+        greeting_text.value = "История приветствия:"
+
+
+    clear_button = ft.IconButton(icon=ft.Icons.DELETE, on_click=clear_history)
+
+    main_object = ft.Row(
+        controls=[text_input, btn, clear_button],
+        alignment=ft.MainAxisAlignment.CENTER
+        ) 
+
+    page.add(text_hello, main_object, theme_btn, greeting_text)
 
 
 ft.app(main_page, view=ft.AppView.WEB_BROWSER)
